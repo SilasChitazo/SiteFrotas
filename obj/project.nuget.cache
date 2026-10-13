@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "o0PEGkpsEio=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\silas\\Desktop\\Projects\\Portifólio\\SiteFrotas\\SiteFrotas.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\silas\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.12\\microsoft.aspnetcore.app.internal.assets.10.0.12.nupkg.sha512",
+    "C:\\Users\\silas\\.nuget\\packages\\system.configuration.configurationmanager\\10.0.12\\system.configuration.configurationmanager.10.0.12.nupkg.sha512",
+    "C:\\Users\\silas\\.nuget\\packages\\system.data.oledb\\10.0.12\\system.data.oledb.10.0.12.nupkg.sha512",
+    "C:\\Users\\silas\\.nuget\\packages\\system.diagnostics.performancecounter\\10.0.12\\system.diagnostics.performancecounter.10.0.12.nupkg.sha512",
+    "C:\\Users\\silas\\.nuget\\packages\\system.security.cryptography.protecteddata\\10.0.12\\system.security.cryptography.protecteddata.10.0.12.nupkg.sha512"
+  ],
+  "logs": []
+}

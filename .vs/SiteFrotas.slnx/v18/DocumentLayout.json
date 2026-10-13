@@ -1,0 +1,110 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\silas\\Desktop\\Projects\\Portif\u00F3lio\\SiteFrotas\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C64DE42E-6C8C-C401-8335-1791A8AB6F86}|SiteFrotas.csproj|c:\\users\\silas\\desktop\\projects\\portif\u00F3lio\\sitefrotas\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C64DE42E-6C8C-C401-8335-1791A8AB6F86}|SiteFrotas.csproj|solutionrelative:components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C64DE42E-6C8C-C401-8335-1791A8AB6F86}|SiteFrotas.csproj|c:\\users\\silas\\desktop\\projects\\portif\u00F3lio\\sitefrotas\\models\\abastecimento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C64DE42E-6C8C-C401-8335-1791A8AB6F86}|SiteFrotas.csproj|solutionrelative:models\\abastecimento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C64DE42E-6C8C-C401-8335-1791A8AB6F86}|SiteFrotas.csproj|c:\\users\\silas\\desktop\\projects\\portif\u00F3lio\\sitefrotas\\components\\pages\\viagens.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C64DE42E-6C8C-C401-8335-1791A8AB6F86}|SiteFrotas.csproj|solutionrelative:components\\pages\\viagens.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C64DE42E-6C8C-C401-8335-1791A8AB6F86}|SiteFrotas.csproj|c:\\users\\silas\\desktop\\projects\\portif\u00F3lio\\sitefrotas\\data\\databasehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C64DE42E-6C8C-C401-8335-1791A8AB6F86}|SiteFrotas.csproj|solutionrelative:data\\databasehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 375,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Abastecimento.cs",
+              "DocumentMoniker": "C:\\Users\\silas\\Desktop\\Projects\\Portif\u00F3lio\\SiteFrotas\\Models\\Abastecimento.cs",
+              "RelativeDocumentMoniker": "Models\\Abastecimento.cs",
+              "ToolTip": "C:\\Users\\silas\\Desktop\\Projects\\Portif\u00F3lio\\SiteFrotas\\Models\\Abastecimento.cs",
+              "RelativeToolTip": "Models\\Abastecimento.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-12T12:31:44.126Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Viagens.razor",
+              "DocumentMoniker": "C:\\Users\\silas\\Desktop\\Projects\\Portif\u00F3lio\\SiteFrotas\\Components\\Pages\\Viagens.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\Viagens.razor",
+              "ToolTip": "C:\\Users\\silas\\Desktop\\Projects\\Portif\u00F3lio\\SiteFrotas\\Components\\Pages\\Viagens.razor",
+              "RelativeToolTip": "Components\\Pages\\Viagens.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-10-12T12:31:33.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\Users\\silas\\Desktop\\Projects\\Portif\u00F3lio\\SiteFrotas\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\Users\\silas\\Desktop\\Projects\\Portif\u00F3lio\\SiteFrotas\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAABMAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-10-12T12:01:46.103Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DataBaseHelper.cs",
+              "DocumentMoniker": "C:\\Users\\silas\\Desktop\\Projects\\Portif\u00F3lio\\SiteFrotas\\Data\\DataBaseHelper.cs",
+              "RelativeDocumentMoniker": "Data\\DataBaseHelper.cs",
+              "ToolTip": "C:\\Users\\silas\\Desktop\\Projects\\Portif\u00F3lio\\SiteFrotas\\Data\\DataBaseHelper.cs",
+              "RelativeToolTip": "Data\\DataBaseHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-12T09:39:27.425Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedHeight": 107,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:8:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{588470cc-84f8-4a57-9ac4-86bca0625ff4}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

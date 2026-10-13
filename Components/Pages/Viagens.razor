@@ -1,0 +1,142 @@
+@page "/viagens"
+@rendermode InteractiveServer
+@using System.Data.OleDb
+@using SiteFrotas.Data
+@using SiteFrotas.Models
+
+<h3>Viagens</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th><th>Veículo (Id)</th><th>Motorista (Id)</th>
+            <th>Origem</th><th>Destino</th><th>Saída</th><th>Chegada</th>
+            <th>Km inicial</th><th>Km final</th><th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in listaViagens)
+        {
+            <tr>
+                <td>@v.Id</td>
+                <td>@v.VeiculoId</td>
+                <td>@v.MotoristaId</td>
+                <td>@v.Origem</td>
+                <td>@v.Destino</td>
+                <td>@v.DataSaida</td>
+                <td>@v.DataChegada</td>
+                <td>@v.KmInicial</td>
+                <td>@v.KmFinal</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" @onclick="() => Editar(v)">Editar</button>
+                    <button class="btn btn-danger btn-sm" @onclick="() => Remover(v.Id)">Remover</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>@(novaViagem.Id == 0 ? "Adicionar viagem" : "Editar viagem")</h4>
+
+<EditForm Model="@novaViagem" OnValidSubmit="Salvar" FormName="ViagemForm">
+    <div class="mb-2"><label>Veículo (Id)</label><InputNumber class="form-control" @bind-Value="novaViagem.VeiculoId" /></div>
+    <div class="mb-2"><label>Motorista (Id)</label><InputNumber class="form-control" @bind-Value="novaViagem.MotoristaId" /></div>
+    <div class="mb-2"><label>Origem</label><InputText class="form-control" @bind-Value="novaViagem.Origem" /></div>
+    <div class="mb-2"><label>Destino</label><InputText class="form-control" @bind-Value="novaViagem.Destino" /></div>
+    <div class="mb-2"><label>Data de saída</label><InputText class="form-control" @bind-Value="novaViagem.DataSaida" /></div>
+    <div class="mb-2"><label>Data de chegada</label><InputText class="form-control" @bind-Value="novaViagem.DataChegada" /></div>
+    <div class="mb-2"><label>Km inicial</label><InputNumber class="form-control" @bind-Value="novaViagem.KmInicial" /></div>
+    <div class="mb-2"><label>Km final</label><InputNumber class="form-control" @bind-Value="novaViagem.KmFinal" /></div>
+    <button type="submit" class="btn btn-primary">@(novaViagem.Id == 0 ? "Guardar" : "Atualizar")</button>
+</EditForm>
+
+@code {
+    private List<Viagem> listaViagens = new();
+    private Viagem novaViagem = new();
+
+    protected override void OnInitialized() => CarregarViagens();
+
+    private void CarregarViagens()
+    {
+        listaViagens.Clear();
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+        comando.CommandText =
+            "SELECT Id, VeiculoId, MotoristaId, Origem, Destino, DataSaida, DataChegada, KmInicial, KmFinal FROM Viagens";
+        using var leitor = comando.ExecuteReader();
+        while (leitor.Read())
+        {
+            listaViagens.Add(new Viagem {
+                Id = leitor.GetInt32(0),
+                VeiculoId = leitor["VeiculoId"] is DBNull ? 0 : Convert.ToInt32(leitor["VeiculoId"]),
+                MotoristaId = leitor["MotoristaId"] is DBNull ? 0 : Convert.ToInt32(leitor["MotoristaId"]),
+                Origem = leitor["Origem"].ToString() ?? "",
+                Destino = leitor["Destino"].ToString() ?? "",
+                DataSaida = leitor["DataSaida"].ToString() ?? "",
+                DataChegada = leitor["DataChegada"].ToString() ?? "",
+                KmInicial = leitor["KmInicial"] is DBNull ? 0 : Convert.ToInt32(leitor["KmInicial"]),
+                KmFinal = leitor["KmFinal"] is DBNull ? 0 : Convert.ToInt32(leitor["KmFinal"])
+            });
+        }
+    }
+
+    private void Editar(Viagem v) => novaViagem = new Viagem {
+        Id = v.Id,
+        VeiculoId = v.VeiculoId,
+        MotoristaId = v.MotoristaId,
+        Origem = v.Origem,
+        Destino = v.Destino,
+        DataSaida = v.DataSaida,
+        DataChegada = v.DataChegada,
+        KmInicial = v.KmInicial,
+        KmFinal = v.KmFinal
+    };
+
+    private void Salvar()
+    {
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+
+        if (novaViagem.Id == 0)
+        {
+            comando.CommandText =
+                "INSERT INTO Viagens (VeiculoId, MotoristaId, Origem, Destino, DataSaida, DataChegada, KmInicial, KmFinal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            comando.Parameters.AddWithValue("@VeiculoId", novaViagem.VeiculoId);
+            comando.Parameters.AddWithValue("@MotoristaId", novaViagem.MotoristaId);
+            comando.Parameters.AddWithValue("@Origem", novaViagem.Origem);
+            comando.Parameters.AddWithValue("@Destino", novaViagem.Destino);
+            comando.Parameters.AddWithValue("@DataSaida", novaViagem.DataSaida);
+            comando.Parameters.AddWithValue("@DataChegada", novaViagem.DataChegada);
+            comando.Parameters.AddWithValue("@KmInicial", novaViagem.KmInicial);
+            comando.Parameters.AddWithValue("@KmFinal", novaViagem.KmFinal);
+        }
+        else
+        {
+            comando.CommandText =
+                "UPDATE Viagens SET VeiculoId=?, MotoristaId=?, Origem=?, Destino=?, DataSaida=?, DataChegada=?, KmInicial=?, KmFinal=? WHERE Id=?";
+            comando.Parameters.AddWithValue("@VeiculoId", novaViagem.VeiculoId);
+            comando.Parameters.AddWithValue("@MotoristaId", novaViagem.MotoristaId);
+            comando.Parameters.AddWithValue("@Origem", novaViagem.Origem);
+            comando.Parameters.AddWithValue("@Destino", novaViagem.Destino);
+            comando.Parameters.AddWithValue("@DataSaida", novaViagem.DataSaida);
+            comando.Parameters.AddWithValue("@DataChegada", novaViagem.DataChegada);
+            comando.Parameters.AddWithValue("@KmInicial", novaViagem.KmInicial);
+            comando.Parameters.AddWithValue("@KmFinal", novaViagem.KmFinal);
+            comando.Parameters.AddWithValue("@Id", novaViagem.Id);
+        }
+
+        comando.ExecuteNonQuery();
+        novaViagem = new Viagem();
+        CarregarViagens();
+    }
+
+    private void Remover(int id)
+    {
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+        comando.CommandText = "DELETE FROM Viagens WHERE Id = ?";
+        comando.Parameters.AddWithValue("@Id", id);
+        comando.ExecuteNonQuery();
+        CarregarViagens();
+    }
+}

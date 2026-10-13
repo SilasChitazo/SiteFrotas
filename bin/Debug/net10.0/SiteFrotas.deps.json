@@ -1,0 +1,112 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "SiteFrotas/1.0.0": {
+        "dependencies": {
+          "System.Data.OleDb": "10.0.12"
+        },
+        "runtime": {
+          "SiteFrotas.dll": {}
+        }
+      },
+      "System.Configuration.ConfigurationManager/10.0.12": {
+        "dependencies": {
+          "System.Security.Cryptography.ProtectedData": "10.0.12"
+        },
+        "runtime": {
+          "lib/net10.0/System.Configuration.ConfigurationManager.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1226.42308"
+          }
+        }
+      },
+      "System.Data.OleDb/10.0.12": {
+        "dependencies": {
+          "System.Configuration.ConfigurationManager": "10.0.12",
+          "System.Diagnostics.PerformanceCounter": "10.0.12"
+        },
+        "runtime": {
+          "lib/net10.0/System.Data.OleDb.dll": {
+            "assemblyVersion": "10.0.0.12",
+            "fileVersion": "10.0.1226.42308"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net10.0/System.Data.OleDb.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "10.0.0.12",
+            "fileVersion": "10.0.1226.42308"
+          }
+        }
+      },
+      "System.Diagnostics.PerformanceCounter/10.0.12": {
+        "dependencies": {
+          "System.Configuration.ConfigurationManager": "10.0.12"
+        },
+        "runtime": {
+          "lib/net10.0/System.Diagnostics.PerformanceCounter.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1226.42308"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net10.0/System.Diagnostics.PerformanceCounter.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1226.42308"
+          }
+        }
+      },
+      "System.Security.Cryptography.ProtectedData/10.0.12": {
+        "runtime": {
+          "lib/net10.0/System.Security.Cryptography.ProtectedData.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1226.42308"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SiteFrotas/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Configuration.ConfigurationManager/10.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6KP/CGB9YymJuhNorm5FS/urQJB40h6t4DIiXN8J1VT/jINZHNgjzcdWRHGYuXGLwO7SCOq5K/OMAnh6oRbeLg==",
+      "path": "system.configuration.configurationmanager/10.0.12",
+      "hashPath": "system.configuration.configurationmanager.10.0.12.nupkg.sha512"
+    },
+    "System.Data.OleDb/10.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IwdlDOFT+aVvq95Stb0+hX/L7id9eGOiYsfsbPQsComFWQQL9XoShkcx8qF/nhWL+/0sQgBfM0Yv9eB07/olYg==",
+      "path": "system.data.oledb/10.0.12",
+      "hashPath": "system.data.oledb.10.0.12.nupkg.sha512"
+    },
+    "System.Diagnostics.PerformanceCounter/10.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KnKUtQdlT2rkPwwqSkLgltzmF0TA8fVIVLon4ApETc6dDFlQv3Bk7FdUhZQI/SYD4CnoY7UpsNX1VobRs6sbGQ==",
+      "path": "system.diagnostics.performancecounter/10.0.12",
+      "hashPath": "system.diagnostics.performancecounter.10.0.12.nupkg.sha512"
+    },
+    "System.Security.Cryptography.ProtectedData/10.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wO0W8VDMeRJZakRySOmemAnrBZMwEFRlbfBtATxUiLf2I3IhSRnCp1Vt157NWptdE4IJ7eftd5n8q9LtaKHFTQ==",
+      "path": "system.security.cryptography.protecteddata/10.0.12",
+      "hashPath": "system.security.cryptography.protecteddata.10.0.12.nupkg.sha512"
+    }
+  }
+}

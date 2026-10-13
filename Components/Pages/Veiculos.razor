@@ -1,0 +1,118 @@
+@page "/veiculos"
+@rendermode InteractiveServer
+@using System.Data.OleDb
+@using SiteFrotas.Data
+@using SiteFrotas.Models
+
+<h3>Veículos</h3>
+
+<table class="table">
+<thead>
+<tr>
+<th>Id</th><th>Matrícula</th><th>Marca</th><th>Modelo</th><th>Ano</th><th>Quilometragem</th><th></th>
+</tr>
+</thead>
+<tbody>
+@foreach (var v in listaVeiculos)
+{
+<tr>
+<td>@v.Id</td>
+<td>@v.Matricula</td>
+<td>@v.Marca</td>
+<td>@v.Modelo</td>
+<td>@v.Ano</td>
+<td>@v.Quilometragem</td>
+<td>
+<button class="btn btn-warning btn-sm" @onclick="() => Editar(v)">Editar</button>
+<button class="btn btn-danger btn-sm" @onclick="() => Remover(v.Id)">Remover</button>
+</td>
+</tr>
+}
+</tbody>
+</table>
+
+<h4>@(novoVeiculo.Id == 0 ? "Adicionar veículo" : "Editar veículo")</h4>
+<EditForm Model="@novoVeiculo" OnValidSubmit="Salvar" FormName="VeiculoForm">
+<div class="mb-2"><label>Matrícula</label><InputText class="form-control" @bind-Value="novoVeiculo.Matricula" /></div>
+<div class="mb-2"><label>Marca</label><InputText class="form-control" @bind-Value="novoVeiculo.Marca" /></div>
+<div class="mb-2"><label>Modelo</label><InputText class="form-control" @bind-Value="novoVeiculo.Modelo" /></div>
+<div class="mb-2"><label>Ano</label><InputNumber class="form-control" @bind-Value="novoVeiculo.Ano" /></div>
+<div class="mb-2"><label>Quilometragem</label><InputNumber class="form-control" @bind-Value="novoVeiculo.Quilometragem" /></div>
+<button type="submit" class="btn btn-primary">@(novoVeiculo.Id == 0 ? "Guardar" : "Atualizar")</button>
+</EditForm>
+
+@code {
+    private List<Veiculo> listaVeiculos = new();
+    private Veiculo novoVeiculo = new();
+
+    protected override void OnInitialized() => CarregarVeiculos();
+
+    private void CarregarVeiculos()
+    {
+        listaVeiculos.Clear();
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+        comando.CommandText = "SELECT Id, Matricula, Marca, Modelo, Ano, Quilometragem FROM Veiculos";
+        using var leitor = comando.ExecuteReader();
+        while (leitor.Read())
+        {
+            listaVeiculos.Add(new Veiculo {
+                Id = leitor.GetInt32(0),
+                Matricula = leitor["Matricula"].ToString() ?? "",
+                Marca = leitor["Marca"].ToString() ?? "",
+                Modelo = leitor["Modelo"].ToString() ?? "",
+                Ano = leitor["Ano"] is DBNull ? 0 : Convert.ToInt32(leitor["Ano"]),
+                Quilometragem = leitor["Quilometragem"] is DBNull ? 0 : Convert.ToInt32(leitor["Quilometragem"])
+            });
+        }
+    }
+
+    private void Editar(Veiculo v) => novoVeiculo = new Veiculo {
+        Id = v.Id,
+        Matricula = v.Matricula,
+        Marca = v.Marca,
+        Modelo = v.Modelo,
+        Ano = v.Ano,
+        Quilometragem = v.Quilometragem
+    };
+
+    private void Salvar()
+    {
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+
+        if (novoVeiculo.Id == 0)
+        {
+            comando.CommandText = "INSERT INTO Veiculos (Matricula, Marca, Modelo, Ano, Quilometragem) VALUES (?, ?, ?, ?, ?)";
+            comando.Parameters.AddWithValue("@Matricula", novoVeiculo.Matricula);
+            comando.Parameters.AddWithValue("@Marca", novoVeiculo.Marca);
+            comando.Parameters.AddWithValue("@Modelo", novoVeiculo.Modelo);
+            comando.Parameters.AddWithValue("@Ano", novoVeiculo.Ano);
+            comando.Parameters.AddWithValue("@Quilometragem", novoVeiculo.Quilometragem);
+        }
+        else
+        {
+            comando.CommandText = "UPDATE Veiculos SET Matricula=?, Marca=?, Modelo=?, Ano=?, Quilometragem=? WHERE Id=?";
+            comando.Parameters.AddWithValue("@Matricula", novoVeiculo.Matricula);
+            comando.Parameters.AddWithValue("@Marca", novoVeiculo.Marca);
+            comando.Parameters.AddWithValue("@Modelo", novoVeiculo.Modelo);
+            comando.Parameters.AddWithValue("@Ano", novoVeiculo.Ano);
+            comando.Parameters.AddWithValue("@Quilometragem", novoVeiculo.Quilometragem);
+            comando.Parameters.AddWithValue("@Id", novoVeiculo.Id);
+        }
+
+        comando.ExecuteNonQuery();
+        novoVeiculo = new Veiculo();
+        CarregarVeiculos();
+    }
+
+    private void Remover(int id)
+    {
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+        comando.CommandText = "DELETE FROM Veiculos WHERE Id = ?";
+        comando.Parameters.AddWithValue("@Id", id);
+        comando.ExecuteNonQuery();
+        CarregarVeiculos();
+    }
+}

@@ -1,0 +1,148 @@
+@page "/abastecimentos"
+@rendermode InteractiveServer
+@using System.Data.OleDb
+@using SiteFrotas.Data
+@using SiteFrotas.Models
+
+<h3>Abastecimentos</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th><th>Veículo (Id)</th><th>Data</th><th>Litros</th>
+            <th>Valor total</th><th>Quilometragem</th><th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in listaAbastecimentos)
+        {
+            <tr>
+                <td>@a.Id</td>
+                <td>@a.VeiculoId</td>
+                <td>@a.Data</td>
+                <td>@a.Litros</td>
+                <td>@a.ValorTotal</td>
+                <td>@a.Quilometragem</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" @onclick="() => Editar(a)">Editar</button>
+                    <button class="btn btn-danger btn-sm" @onclick="() => Remover(a.Id)">Remover</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>@(novoAbastecimento.Id == 0 ? "Adicionar abastecimento" : "Editar abastecimento")</h4>
+
+<EditForm Model="@novoAbastecimento" OnValidSubmit="Salvar">
+    <div class="mb-2">
+        <label>Veículo (Id)</label>
+        <InputNumber class="form-control" @bind-Value="novoAbastecimento.VeiculoId" />
+    </div>
+    <div class="mb-2">
+        <label>Data</label>
+        <InputText class="form-control" @bind-Value="novoAbastecimento.Data" />
+    </div>
+    <div class="mb-2">
+        <label>Litros</label>
+        <InputNumber class="form-control" @bind-Value="novoAbastecimento.Litros" />
+    </div>
+    <div class="mb-2">
+        <label>Valor total</label>
+        <InputNumber class="form-control" @bind-Value="novoAbastecimento.ValorTotal" />
+    </div>
+    <div class="mb-2">
+        <label>Quilometragem</label>
+        <InputNumber class="form-control" @bind-Value="novoAbastecimento.Quilometragem" />
+    </div>
+    <button type="submit" class="btn btn-primary">
+        @(novoAbastecimento.Id == 0 ? "Guardar" : "Atualizar")
+    </button>
+</EditForm>
+
+@code {
+    private List<Abastecimento> listaAbastecimentos = new();
+    private Abastecimento novoAbastecimento = new();
+
+    protected override void OnInitialized()
+    {
+        CarregarAbastecimentos();
+    }
+
+    private void CarregarAbastecimentos()
+    {
+        listaAbastecimentos.Clear();
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+        comando.CommandText = "SELECT Id, VeiculoId, Data, Litros, ValorTotal, Quilometragem FROM Abastecimentos";
+        using var leitor = comando.ExecuteReader();
+        while (leitor.Read())
+        {
+            listaAbastecimentos.Add(new Abastecimento
+            {
+                Id = leitor.GetInt32(0),
+                VeiculoId = leitor["VeiculoId"] is DBNull ? 0 : Convert.ToInt32(leitor["VeiculoId"]),
+                Data = leitor["Data"].ToString() ?? "",
+                Litros = leitor["Litros"] is DBNull ? 0 : Convert.ToDouble(leitor["Litros"]),
+                ValorTotal = leitor["ValorTotal"] is DBNull ? 0 : Convert.ToDouble(leitor["ValorTotal"]),
+                Quilometragem = leitor["Quilometragem"] is DBNull ? 0 : Convert.ToInt32(leitor["Quilometragem"])
+            });
+        }
+    }
+
+    private void Editar(Abastecimento a)
+    {
+        novoAbastecimento = new Abastecimento {
+            Id = a.Id,
+            VeiculoId = a.VeiculoId,
+            Data = a.Data,
+            Litros = a.Litros,
+            ValorTotal = a.ValorTotal,
+            Quilometragem = a.Quilometragem
+        };
+    }
+
+    private void Salvar()
+    {
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+
+        if (novoAbastecimento.Id == 0)
+        {
+            // INSERT
+            comando.CommandText =
+                "INSERT INTO Abastecimentos (VeiculoId, Data, Litros, ValorTotal, Quilometragem) VALUES (?, ?, ?, ?, ?)";
+            comando.Parameters.AddWithValue("@VeiculoId", novoAbastecimento.VeiculoId);
+            comando.Parameters.AddWithValue("@Data", novoAbastecimento.Data);
+            comando.Parameters.AddWithValue("@Litros", novoAbastecimento.Litros);
+            comando.Parameters.AddWithValue("@ValorTotal", novoAbastecimento.ValorTotal);
+            comando.Parameters.AddWithValue("@Quilometragem", novoAbastecimento.Quilometragem);
+        }
+        else
+        {
+            // UPDATE
+            comando.CommandText =
+                "UPDATE Abastecimentos SET VeiculoId=?, Data=?, Litros=?, ValorTotal=?, Quilometragem=? WHERE Id=?";
+            comando.Parameters.AddWithValue("@VeiculoId", novoAbastecimento.VeiculoId);
+            comando.Parameters.AddWithValue("@Data", novoAbastecimento.Data);
+            comando.Parameters.AddWithValue("@Litros", novoAbastecimento.Litros);
+            comando.Parameters.AddWithValue("@ValorTotal", novoAbastecimento.ValorTotal);
+            comando.Parameters.AddWithValue("@Quilometragem", novoAbastecimento.Quilometragem);
+            comando.Parameters.AddWithValue("@Id", novoAbastecimento.Id);
+        }
+
+        comando.ExecuteNonQuery();
+        novoAbastecimento = new Abastecimento(); // limpa o formulário
+        CarregarAbastecimentos();
+    }
+
+    private void Remover(int id)
+    {
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+        comando.CommandText = "DELETE FROM Abastecimentos WHERE Id = ?";
+        comando.Parameters.AddWithValue("@Id", id);
+        comando.ExecuteNonQuery();
+        CarregarAbastecimentos();
+    }
+}

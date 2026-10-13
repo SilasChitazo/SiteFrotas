@@ -1,0 +1,103 @@
+@page "/motoristas"
+@rendermode InteractiveServer
+@using System.Data.OleDb
+@using SiteFrotas.Data
+@using SiteFrotas.Models
+
+<h3>Motoristas</h3>
+
+<table class="table">
+<thead>
+<tr>
+<th>Id</th><th>Nome</th><th>Número da Carta</th><th>Telefone</th><th></th>
+</tr>
+</thead>
+<tbody>
+@foreach (var m in listaMotoristas)
+{
+<tr>
+<td>@m.Id</td>
+<td>@m.Nome</td>
+<td>@m.NumeroCarta</td>
+<td>@m.Telefone</td>
+<td>
+<button class="btn btn-warning btn-sm" @onclick="() => Editar(m)">Editar</button>
+<button class="btn btn-danger btn-sm" @onclick="() => Remover(m.Id)">Remover</button>
+</td>
+</tr>
+}
+</tbody>
+</table>
+
+<h4>@(novoMotorista.Id == 0 ? "Adicionar motorista" : "Editar motorista")</h4>
+<EditForm Model="@novoMotorista" OnValidSubmit="Salvar" FormName="MotoristaForm">
+<div class="mb-2"><label>Nome</label><InputText class="form-control" @bind-Value="novoMotorista.Nome" /></div>
+<div class="mb-2"><label>Número da Carta</label><InputText class="form-control" @bind-Value="novoMotorista.NumeroCarta" /></div>
+<div class="mb-2"><label>Telefone</label><InputText class="form-control" @bind-Value="novoMotorista.Telefone" /></div>
+<button type="submit" class="btn btn-primary">@(novoMotorista.Id == 0 ? "Guardar" : "Atualizar")</button>
+</EditForm>
+
+@code {
+    private List<Motorista> listaMotoristas = new();
+    private Motorista novoMotorista = new();
+
+    protected override void OnInitialized() => CarregarMotoristas();
+
+    private void CarregarMotoristas()
+    {
+        listaMotoristas.Clear();
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+        comando.CommandText = "SELECT Id, Nome, NumeroCarta, Telefone FROM Motoristas";
+        using var leitor = comando.ExecuteReader();
+        while (leitor.Read())
+        {
+            listaMotoristas.Add(new Motorista {
+                Id = leitor.GetInt32(0),
+                Nome = leitor["Nome"].ToString() ?? "",
+                NumeroCarta = leitor["NumeroCarta"].ToString() ?? "",
+                Telefone = leitor["Telefone"].ToString() ?? ""
+            });
+        }
+    }
+
+    private void Editar(Motorista m) => novoMotorista = new Motorista {
+        Id = m.Id, Nome = m.Nome, NumeroCarta = m.NumeroCarta, Telefone = m.Telefone
+    };
+
+    private void Salvar()
+    {
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+
+        if (novoMotorista.Id == 0)
+        {
+            comando.CommandText = "INSERT INTO Motoristas (Nome, NumeroCarta, Telefone) VALUES (?, ?, ?)";
+            comando.Parameters.AddWithValue("@Nome", novoMotorista.Nome);
+            comando.Parameters.AddWithValue("@NumeroCarta", novoMotorista.NumeroCarta);
+            comando.Parameters.AddWithValue("@Telefone", novoMotorista.Telefone);
+        }
+        else
+        {
+            comando.CommandText = "UPDATE Motoristas SET Nome=?, NumeroCarta=?, Telefone=? WHERE Id=?";
+            comando.Parameters.AddWithValue("@Nome", novoMotorista.Nome);
+            comando.Parameters.AddWithValue("@NumeroCarta", novoMotorista.NumeroCarta);
+            comando.Parameters.AddWithValue("@Telefone", novoMotorista.Telefone);
+            comando.Parameters.AddWithValue("@Id", novoMotorista.Id);
+        }
+
+        comando.ExecuteNonQuery();
+        novoMotorista = new Motorista();
+        CarregarMotoristas();
+    }
+
+    private void Remover(int id)
+    {
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+        comando.CommandText = "DELETE FROM Motoristas WHERE Id = ?";
+        comando.Parameters.AddWithValue("@Id", id);
+        comando.ExecuteNonQuery();
+        CarregarMotoristas();
+    }
+}

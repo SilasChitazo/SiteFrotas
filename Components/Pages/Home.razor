@@ -1,0 +1,89 @@
+﻿@page "/"
+@using SiteFrotas.Data
+<PageTitle>Gestão de Frotas</PageTitle>
+
+<h1 class="fw-bold">Gestão de Frotas</h1>
+<p class="text-muted">Resumo geral do sistema.</p>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <div class="card text-bg-primary h-100">
+            <div class="card-body">
+                <div class="display-5 fw-bold">@totalVeiculos</div>
+                <div>Veículos</div>
+                <a class="link-light" href="veiculos">Ver veículos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-bg-success h-100">
+            <div class="card-body">
+                <div class="display-5 fw-bold">@totalMotoristas</div>
+                <div>Motoristas</div>
+                <a class="link-light" href="motoristas">Ver motoristas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-bg-secondary h-100">
+            <div class="card-body">
+                <div class="display-5 fw-bold">@totalViagens</div>
+                <div>Viagens registadas</div>
+                <a class="link-light" href="viagens">Ver viagens</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="display-6 fw-bold">@litros.ToString("N1") L</div>
+                <div>Combustível abastecido</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="display-6 fw-bold">@gasto.ToString("N2")</div>
+                <div>Gasto total em combustível</div>
+                <a href="abastecimentos">Ver abastecimentos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="display-6 fw-bold">@km.ToString("N0") km</div>
+                <div>Percorridos em viagens</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int totalVeiculos, totalMotoristas, totalViagens, km;
+    private double litros, gasto;
+
+    protected override void OnInitialized()
+    {
+        totalVeiculos   = (int)Valor("SELECT COUNT(*) FROM Veiculos");
+        totalMotoristas = (int)Valor("SELECT COUNT(*) FROM Motoristas");
+        totalViagens    = (int)Valor("SELECT COUNT(*) FROM Viagens");
+        litros = Valor("SELECT SUM(Litros) FROM Abastecimentos");
+        gasto  = Valor("SELECT SUM(ValorTotal) FROM Abastecimentos");
+        km     = (int)Valor("SELECT SUM(KmFinal - KmInicial) FROM Viagens WHERE KmFinal > KmInicial");
+    }
+
+    // Executa um SELECT que devolve um número só. Se a tabela estiver vazia, devolve 0.
+    private double Valor(string sql)
+    {
+        using var conexao = DatabaseHelper.ObterConexao();
+        using var comando = conexao.CreateCommand();
+        comando.CommandText = sql;
+        var resultado = comando.ExecuteScalar();
+        return resultado == null || resultado is DBNull ? 0 : Convert.ToDouble(resultado);
+    }
+}
